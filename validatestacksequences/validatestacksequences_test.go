@@ -21,12 +21,14 @@ func (s stack) Pop() (stack, int) {
 	return s[:l-1], s[l-1]
 }
 
+// validateStackSequences
+// https://leetcode.com/problems/validate-stack-sequences/
 func validateStackSequences(pushed []int, popped []int) bool {
 	s := *new(stack)
 	var i, j int
 	for i < len(pushed) {
 		s = s.Push(pushed[i])
-		for j < len(popped) && s[len(s)-1] == popped[j] {
+		for j < len(popped) && len(s) >= 1 && s[len(s)-1] == popped[j] {
 			s, _ = s.Pop()
 			j++
 		}
@@ -44,6 +46,11 @@ func TestValidateStackSequences(t *testing.T) {
 		{
 			pushed:   []int{1, 2, 3, 4, 5},
 			popped:   []int{4, 5, 3, 2, 1},
+			expected: true,
+		},
+		{
+			pushed:   []int{1, 0},
+			popped:   []int{1, 0},
 			expected: true,
 		},
 	}
