@@ -28,7 +28,6 @@ func profitableSchemes(n int, minProfit int, group []int, profit []int) int {
 				dp[i%2][j][k] = dp[(i-1)%2][j][k] % MOD
 				if j-group[(i-1)] >= 0 {
 					preProfit := max(k-profit[i-1], 0)
-					fmt.Printf("preprofit %d\n", preProfit)
 					dp[i%2][j][k] += dp[(i-1)%2][j-group[(i-1)]][preProfit] % MOD
 				}
 			}
