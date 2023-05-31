@@ -39,8 +39,6 @@ func TestMergeNodes(t *testing.T) {
 		input    *ListNode
 		expected *ListNode
 	}{
-		// Input: head = [0,3,1,0,4,5,2,0]
-		// Output: [4,11]
 		{
 			input: &ListNode{
 				Val: 0,
