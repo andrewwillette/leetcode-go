@@ -14,26 +14,24 @@ type ListNode struct {
 
 // https://leetcode.com/problems/merge-nodes-in-between-zeros/
 func mergeNodes(head *ListNode) *ListNode {
-	result := new(ListNode)
-	currentNode := result
-	summation := 0
-	node := head.Next
-	for {
-		if node.Val == 0 {
-			result.Val = summation
-			result.Next = new(ListNode)
-			result = result.Next
-			node = node.Next
-			continue
-		} else {
-			summation += result.Val
-			node = node.Next
+	var newHead, tail *ListNode
+	currentSum := 0
+	for head != nil {
+		currentSum += head.Val
+		if head.Val == 0 && currentSum != 0 {
+			newNode := &ListNode{Val: currentSum}
+			if newHead == nil {
+				newHead = newNode
+				tail = newNode
+			} else {
+				tail.Next = newNode
+				tail = newNode
+			}
+			currentSum = 0
 		}
-		if node.Next == nil {
-			break
-		}
+		head = head.Next
 	}
-	return result
+	return newHead
 }
 
 func TestMergeNodes(t *testing.T) {
