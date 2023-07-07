@@ -14,10 +14,8 @@ func maxIncreaseKeepingSkyline(grid [][]int) int {
 		for columni, columnval := range row {
 			maxrow := getRowMax(rowi, grid)
 			maxcolumn := getColumnMax(columni, grid)
-			maxskyline := maximum(maxrow, maxcolumn)
-			result += maxskyline - columnval
-			grid[rowi][columni] = maxskyline
-			fmt.Printf("maxskyline for %v, %v : %v\n", rowi, columni, maxskyline)
+			skylineIncrease := minimum(maxrow, maxcolumn)
+			result += skylineIncrease - columnval
 		}
 	}
 	return result
@@ -45,6 +43,13 @@ func getColumnMax(index int, grid [][]int) int {
 
 func maximum(a, b int) int {
 	if a > b {
+		return a
+	}
+	return b
+}
+
+func minimum(a, b int) int {
+	if a < b {
 		return a
 	}
 	return b
