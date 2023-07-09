@@ -1,5 +1,6 @@
 package twosum
 
+// https://leetcode.com/problems/two-sum/
 func twoSum(nums []int, target int) []int {
 	// exists - the number and it's index
 	exists := map[int]int{}
