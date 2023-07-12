@@ -42,10 +42,10 @@ func TestLengthOfLIS(t *testing.T) {
 			nums:     []int{10, 9, 2, 5, 3, 7, 101, 18},
 			expected: 4,
 		},
-		// {
-		// 	nums:     []int{3, 2, 1},
-		// 	expected: 1,
-		// },
+		{
+			nums:     []int{3, 2, 1},
+			expected: 1,
+		},
 	}
 	for _, c := range cases {
 		t.Run(fmt.Sprintf(""), func(t *testing.T) {
