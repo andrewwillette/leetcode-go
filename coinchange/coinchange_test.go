@@ -9,7 +9,7 @@ import (
 
 // https://leetcode.com/problems/coin-change/
 func coinChange(coins []int, amount int) int {
-	return 0
+	return -1
 }
 
 func TestCoinChange(t *testing.T) {
