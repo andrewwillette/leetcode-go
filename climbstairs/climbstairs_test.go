@@ -10,13 +10,14 @@ func climbStairs(n int) int {
 	case 2:
 		return 2
 	default:
-		oneStepBefore := 2
-		twoStepsBefore := 1
+		// fibonacci
 		allWays := 0
+		nMinusTwo := 1
+		nMinusOne := 2
 		for i := 2; i < n; i++ {
-			allWays = oneStepBefore + twoStepsBefore
-			twoStepsBefore = oneStepBefore
-			oneStepBefore = allWays
+			allWays = nMinusOne + nMinusTwo
+			nMinusTwo = nMinusOne
+			nMinusOne = allWays
 		}
 		return allWays
 	}
