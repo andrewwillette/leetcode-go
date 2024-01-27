@@ -10,49 +10,27 @@ import (
 // https://leetcode.com/problems/longest-common-subsequence
 
 // longestCommonSubsequenceDP solved with dynamic programming
-// not working currently
 func longestCommonSubsequenceDP(text1 string, text2 string) int {
-	dp := [][]int{}
-	// check if text2[0] exists in text1
-	text20Exists := false
-	for _, v := range text1 {
-		if v == rune(text2[0]) {
-			text20Exists = true
-		}
-	}
-	for i, v1 := range text1 {
-		baseCase := make([]int, len(text2))
-		if text20Exists {
-			baseCase[0] = 1
-		}
-		if i == 0 && v1 == rune(text2[0]) {
-			// populate baseCase array with 1
-			for j := 0; j < len(baseCase); j++ {
-				baseCase[j] = 1
-			}
-		}
-		for j := 0; j < len(baseCase); j++ {
-			if text2[j] == text1[0] {
-				baseCase[j] = 1
-			}
-		}
-		if text1[0] == text2[0] {
-			baseCase[0] = 1
-		}
-		dp = append(dp, baseCase)
+	// dp[i][j] represents the longest common subsequence of text1[0:i] and text2[0:j]
+	n := len(text1)
+	m := len(text2)
+
+	dp := make([][]int, n+1)
+	for i := 0; i <= n; i++ {
+		dp[i] = make([]int, m+1)
 	}
 
-	for i := 1; i < len(text1); i++ {
-		for j := 1; j < len(text2); j++ {
-			if text1[i] == text2[j] {
+	for i := 1; i <= n; i++ {
+		for j := 1; j <= m; j++ {
+			// base case
+			if text1[i-1] == text2[j-1] {
 				dp[i][j] = dp[i-1][j-1] + 1
 			} else {
 				dp[i][j] = max(dp[i-1][j], dp[i][j-1])
 			}
 		}
 	}
-	fmt.Printf("%v\n", dp)
-	result := dp[len(text1)-1][len(text2)-1]
+	result := dp[n][m]
 	return result
 }
 
@@ -71,6 +49,31 @@ func TestLongestCommonSubsequenceDP(t *testing.T) {
 			text1:    "abc",
 			text2:    "abc",
 			expected: 3,
+		},
+		{
+			text1:    "abc",
+			text2:    "def",
+			expected: 0,
+		},
+		{
+			text1:    "bl",
+			text2:    "yby",
+			expected: 1,
+		},
+		{
+			text1:    "ezupkr",
+			text2:    "ubmrapg",
+			expected: 2,
+		},
+		{
+			text1:    "oxcpqrsvwf",
+			text2:    "shmtulqrypy",
+			expected: 2,
+		},
+		{
+			text1:    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+			text2:    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+			expected: 210,
 		},
 	}
 	for _, c := range cases {
