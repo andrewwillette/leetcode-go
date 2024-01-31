@@ -24,6 +24,36 @@ func evalRPN(tokens []string) int {
 	return i
 }
 
+func evalRPNOptimized(tokens []string) int {
+	_, j := 0, 0
+	result := 0
+	if len(tokens) == 1 {
+		return stringToInt(tokens[0])
+	}
+	for {
+		if j == len(tokens) {
+			break
+		}
+		switch tokens[j] {
+		case "+":
+			result = stringToInt(tokens[j-2]) + stringToInt(tokens[j-1])
+			j++
+		case "-":
+			result = stringToInt(tokens[j-2]) - stringToInt(tokens[j-1])
+			j++
+		case "*":
+			result = stringToInt(tokens[j-2]) * stringToInt(tokens[j-1])
+			j++
+		case "/":
+			result = stringToInt(tokens[j-2]) / stringToInt(tokens[j-1])
+			j++
+		default:
+			j++
+		}
+	}
+	return result
+}
+
 func stringToInt(s string) int {
 	i, err := strconv.Atoi(s)
 	if err != nil {
@@ -38,7 +68,6 @@ func evalNextOperator(tokens []string) []string {
 		if tokens[i] == "+" {
 			result := stringToInt(tokens[i-2]) + stringToInt(tokens[i-1])
 			tokens[i] = fmt.Sprint(result)
-
 			output = append(tokens[:i-2], tokens[i:]...)
 			break
 		} else if tokens[i] == "-" {
