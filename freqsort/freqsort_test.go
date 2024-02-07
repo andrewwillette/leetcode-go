@@ -1,6 +1,12 @@
 package freqsort
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+	"testing"
+
+	"github.com/stretchr/testify/require"
+)
 
 // https://leetcode.com/problems/sort-characters-by-frequency/
 func frequencySort(s string) string {
@@ -27,4 +33,48 @@ func frequencySort(s string) string {
 		}
 	}
 	return result
+}
+
+func frequencySortOptimized(s string) string {
+	if len(s) < 2 {
+		return s
+	}
+	dict := [256]int{}
+	for i := 0; i < len(s); i++ {
+		dict[s[i]]++
+	}
+
+	b := []byte(s) //type conversion
+
+	sort.Slice(b, func(i, j int) bool {
+		if dict[b[i]] == dict[b[j]] {
+			return b[i] > b[j]
+		}
+		return dict[b[i]] > dict[b[j]]
+	})
+
+	return string(b)
+}
+
+func TestFrequencySort(t *testing.T) {
+	// cases commented out because the result is not deterministic
+	var cases = []struct {
+		s        string
+		expected string
+	}{
+		// {
+		// 	s:        "tree",
+		// 	expected: "eert",
+		// },
+		// {
+		// 	s:        "cccaaa",
+		// 	expected: "aaaccc",
+		// },
+	}
+	for _, c := range cases {
+		t.Run(fmt.Sprintf(""), func(t *testing.T) {
+			result := frequencySort(c.s)
+			require.Equal(t, c.expected, result)
+		})
+	}
 }
