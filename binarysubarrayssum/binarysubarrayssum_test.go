@@ -28,6 +28,25 @@ func numSubarraysWithSum(nums []int, goal int) int {
 	return total
 }
 
+// numSubarraysWithSumOptimized is a optimized version of numSubarraysWithSum
+// not the best, but better, O(n) rather than O(n^2)
+func numSubarraysWithSumOptimized(nums []int, goal int) int {
+	total, sum := 0, 0
+	memo := make(map[int]int)
+	// base case, we can always add 0 and get 0
+	memo[0] = 1
+	for _, v := range nums {
+		sum += v
+		rem := sum - goal
+		if freq, ok := memo[rem]; ok {
+			total += freq
+		}
+		memo[sum] += 1
+
+	}
+	return total
+}
+
 func TestNumSubarraysWithSum(t *testing.T) {
 	var cases = []struct {
 		nums     []int
