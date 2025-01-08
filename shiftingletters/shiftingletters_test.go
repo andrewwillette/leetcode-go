@@ -2,43 +2,40 @@ package shiftingletters
 
 // #2381. Shifting Letters II
 // https://leetcode.com/problems/shifting-letters-ii
+// difference array pattern!
 func shiftingLetters(s string, shifts [][]int) string {
-	differenceArray := make([]int, len(s))
-	for i := 0; i < len(shifts); i++ {
-		for j := shifts[i][0]; j <= shifts[i][1]; j++ {
-			if shifts[i][2] > 0 { // shift forwards
-				differenceArray[j] += differenceArray[j] + 1
-			} else { // shift backwards
-				differenceArray[j] += differenceArray[j] - 1
-			}
+	n := len(s)
+	differenceArray := make([]int, n+1)
+
+	for _, shift := range shifts {
+		start, end, direction := shift[0], shift[1], shift[2]
+		if direction == 1 {
+			differenceArray[start] += 1
+			differenceArray[end+1] -= 1
+		} else {
+			differenceArray[start] -= 1
+			differenceArray[end+1] += 1
 		}
 	}
+
+	currentShift := 0
 	runes := []rune(s)
 	for i := 0; i < len(runes); i++ {
-		runes[i] = shiftRune(runes[i], differenceArray[i])
+		currentShift += differenceArray[i]
+		runes[i] = shiftRune(runes[i], currentShift)
 	}
 	return string(runes)
 }
 
 func shiftRune(runeToShift rune, shiftCount int) rune {
-	alphabet := []rune{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}
-	alphabetLength := len(alphabet)
-	var toReturn rune
-	for i := 0; i < len(alphabet); i++ {
-		if alphabet[i] == runeToShift {
-			index := i + shiftCount
-			if index < 0 {
-				index = abs(index)
-				indexModed := index % alphabetLength
-				// -1 is the last element in the array
-				toReturn = alphabet[alphabetLength-1-indexModed]
-			} else {
-				indexModed := index % alphabetLength
-				toReturn = alphabet[indexModed]
-			}
-		}
+	alphabetLength := 26
+	base := int('a')
+
+	newPos := (int(int(runeToShift)-base) + shiftCount) % alphabetLength
+	if newPos < 0 {
+		newPos += alphabetLength
 	}
-	return toReturn
+	return rune(base + newPos)
 }
 
 func abs(a int) int {
